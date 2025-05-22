@@ -15,7 +15,7 @@ namespace v4posme_printer_window_services
             {
                 if (_logger.IsEnabled(LogLevel.Information))
                 {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    _logger.LogInformation("Worker running wt: {time}", DateTimeOffset.Now);
                 }
                 await Task.Delay(1000, stoppingToken);
             }
