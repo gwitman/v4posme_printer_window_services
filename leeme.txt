@@ -1,0 +1,15 @@
+01) Compilar la solucion
+02) Pegar los archivos compilados en la siguiente direccion:  	
+	origen:	C:\xampp\teamds2\nsSystem\v4posme_printer_window_services\v4posme_printer_window_services\v4posme_printer_window_services\bin\Debug\net8.0-windows
+	destino: C:\xampp\teamds2\nsSystem\v4posme_printer_services
+
+	
+03) acceder desde la consola en modo admin: al directorio
+04) instalar	v4posme_printer_window_services.exe install
+05) desintalar	v4posme_printer_window_services.exe uninstall
+06) ejecutar el servicio en administrador de tareas, automaticamente.
+
+Datos:
+01) ruta de log: c:\Log\posme-windows-service\logs\
+02) Ver el servicio
+		administrador de tareas, ... services
