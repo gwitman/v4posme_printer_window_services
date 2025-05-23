@@ -11,10 +11,11 @@ public class PdfPrinter(string pdfPath)
             // Cargar el documento PDF
             using var document                          = PdfDocument.Load(pdfPath);
             using var printDocument                     = document.CreatePrintDocument();
-            printDocument.PrinterSettings.PrinterName   = printerName;
             // Configurar para imprimir todas las páginas
-            printDocument.PrinterSettings.FromPage  = 1;
-            printDocument.PrinterSettings.ToPage    = document.PageCount;
+            printDocument.PrinterSettings.PrinterName               = printerName;
+            printDocument.PrinterSettings.FromPage                  = 1;
+            printDocument.PrinterSettings.ToPage                    = document.PageCount;
+            printDocument.PrinterSettings.DefaultPageSettings.Color = true;
             printDocument.Print();
             return $"Documento se ha impreso correctamente {pdfPath}";
         }
