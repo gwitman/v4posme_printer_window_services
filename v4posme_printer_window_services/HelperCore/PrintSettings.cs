@@ -6,4 +6,6 @@ public class PrintSettings
     public int PrintIntervalSeconds { get; set; }
     public string PrinterName { get; set; } = string.Empty;
     public string PrefijoName { get; set; } = string.Empty;
+    public int WidthPage { get; set; } = 283;
+    public string TipoPrinter { get; set; } = string.Empty;
 }

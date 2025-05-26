@@ -25,7 +25,7 @@ public class MainJob(PrintSettings settings, ILog log) : IJob
                     log.Info($"Procesando archivo: {archivo}");
 
                     var printer     = new PdfPrinter(archivo);
-                    var printResult = printer.Print(settings.PrinterName);
+                    var printResult = printer.Print(settings, log);
 
                     log.Info($"Resultado impresión: {printResult}");
 
