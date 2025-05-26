@@ -1,3 +1,4 @@
+00) https://aka.ms/dotnet-core-applaunch?framework=Microsoft.NETCore.App&framework_version=8.0.0&arch=x64&rid=win10-x64
 01) Compilar la solucion
 02) Pegar los archivos compilados en la siguiente direccion:  	
 	origen:	C:\xampp\teamds2\nsSystem\v4posme_printer_window_services\v4posme_printer_window_services\v4posme_printer_window_services\bin\Debug\net8.0-windows
