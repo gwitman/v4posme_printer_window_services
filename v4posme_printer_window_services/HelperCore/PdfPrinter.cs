@@ -11,22 +11,23 @@ public class PdfPrinter(string pdfPath)
     {
         try
         {
-            using var document = PdfDocument.Load(pdfPath);
-            using var printDocument = document.CreatePrintDocument(PdfPrintSettings.DefaultPrinterSettings);
-            printDocument.PrintController = new StandardPrintController();
+            using var document              = PdfDocument.Load(pdfPath);
+            using var printDocument         = document.CreatePrintDocument(PdfPrintSettings.DefaultPrinterSettings);
+            printDocument.PrintController   = new StandardPrintController();
             // Configurar para imprimir todas las páginas
-            printDocument.PrinterSettings.PrinterName = settings.PrinterName;
-            printDocument.PrinterSettings.FromPage = 1;
-            printDocument.PrinterSettings.ToPage = document.PageCount;
-            log.Info(printDocument.DefaultPageSettings.PaperSize);
+            printDocument.PrinterSettings.PrinterName   = settings.PrinterName;
+            printDocument.PrinterSettings.FromPage      = 1;
+            printDocument.PrinterSettings.ToPage        = document.PageCount;
+            
+            log.Info("Medida de la pagina ancho del documento:" + printDocument.DefaultPageSettings.PaperSize);
             foreach (PaperSize paperSize in printDocument.PrinterSettings.PaperSizes)
             {
-                log.Info(paperSize);
+                log.Info("Medida de la impresora ancho:" + paperSize);
             }
             if (settings.PrinterName.Contains(settings.TipoPrinter, StringComparison.InvariantCultureIgnoreCase))
             {
                 printDocument.DefaultPageSettings.PaperSize = new PaperSize("ThermalReceipt80 Custom", settings.WidthPage, 12898);
-                printDocument.DefaultPageSettings.Margins = new Margins(0, 0, 0, 0);
+                printDocument.DefaultPageSettings.Margins   = new Margins(0, 0, 0, 0);
             }
             
             printDocument.DefaultPageSettings.Color = true;
