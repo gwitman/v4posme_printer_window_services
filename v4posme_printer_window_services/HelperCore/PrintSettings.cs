@@ -7,5 +7,7 @@ public class PrintSettings
     public string PrinterName { get; set; } = string.Empty;
     public string PrefijoName { get; set; } = string.Empty;
     public int WidthPage { get; set; } = 283;
+    public int Scale { get; set; } = 85;
+    public int Copies { get; set; } = 1;
     public string TipoPrinter { get; set; } = string.Empty;
 }

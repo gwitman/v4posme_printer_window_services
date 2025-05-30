@@ -1,7 +1,7 @@
 ﻿using System.Drawing.Printing;
 using log4net;
-using PdfiumViewer;
-using PdfDocument = PdfiumViewer.PdfDocument;
+using Patagames.Pdf.Net;
+using Patagames.Pdf.Net.Controls.WinForms;
 
 namespace v4posme_printer_window_services.HelperCore;
 
@@ -11,27 +11,43 @@ public class PdfPrinter(string pdfPath)
     {
         try
         {
-            using var document              = PdfDocument.Load(pdfPath);
-            using var printDocument         = document.CreatePrintDocument(PdfPrintSettings.DefaultPrinterSettings);
-            printDocument.PrintController   = new StandardPrintController();
-            // Configurar para imprimir todas las páginas
-            printDocument.PrinterSettings.PrinterName   = settings.PrinterName;
-            printDocument.PrinterSettings.FromPage      = 1;
-            printDocument.PrinterSettings.ToPage        = document.PageCount;
-            
-            log.Info("Medida de la pagina ancho del documento:" + printDocument.DefaultPageSettings.PaperSize);
-            foreach (PaperSize paperSize in printDocument.PrinterSettings.PaperSizes)
+            PdfCommon.Initialize();
+            using var document = PdfDocument.Load(pdfPath);
+            using var printDoc = new PdfPrintDocument(document);
+            printDoc.PrintController                = new StandardPrintController();
+            printDoc.PrinterSettings.PrinterName    = settings.PrinterName;
+            log.Info($"Document Paper Size: {printDoc.DefaultPageSettings.PaperSize}");
+            foreach (PaperSize paperSize in printDoc.PrinterSettings.PaperSizes)
             {
-                log.Info("Medida de la impresora ancho:" + paperSize);
+                log.Info($"Printer Paper size: {paperSize}");
             }
-            if (settings.PrinterName.Contains(settings.TipoPrinter, StringComparison.InvariantCultureIgnoreCase))
+
+            printDoc.PrinterSettings.Copies     = (short)settings.Copies;
+            printDoc.PrinterSettings.FromPage   = 1;
+            printDoc.PrinterSettings.ToPage     = document.Pages.Count;
+            printDoc.DefaultPageSettings.Color  = true;
+
+            if (settings.TipoPrinter.Contains("pos", StringComparison.InvariantCultureIgnoreCase))
             {
-                printDocument.DefaultPageSettings.PaperSize = new PaperSize("ThermalReceipt80 Custom", settings.WidthPage, 12898);
-                printDocument.DefaultPageSettings.Margins   = new Margins(0, 0, 0, 0);
+                if (settings.Scale > 0)
+                {
+                    printDoc.PrintSizeMode  = PrintSizeMode.CustomScale;
+                    printDoc.Scale          = settings.Scale;
+                }
+                else
+                {
+                    printDoc.PrintSizeMode = PrintSizeMode.ActualSize;
+                }
+
+                printDoc.AutoCenter         = false;
+                printDoc.OriginAtMargins    = true;
+                printDoc.DefaultPageSettings.Margins                = new Margins(0, 0, 0, 0);
+                printDoc.DefaultPageSettings.PrinterResolution.Kind = PrinterResolutionKind.High;
+                printDoc.DefaultPageSettings.PaperSize              = new PaperSize("Custom", settings.WidthPage, printDoc.DefaultPageSettings.PaperSize.Height);
+                printDoc.DefaultPageSettings.Landscape              = false;
             }
-            
-            printDocument.DefaultPageSettings.Color = true;
-            printDocument.Print();
+
+            printDoc.Print();
             return $"Documento se ha impreso correctamente {pdfPath}";
         }
         catch (Exception ex)
