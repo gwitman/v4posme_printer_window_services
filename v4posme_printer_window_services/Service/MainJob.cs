@@ -22,6 +22,16 @@ public class MainJob(PrintSettings settings, ILog log) : IJob
             {
                 try
                 {
+                    var tiempoArchivo = File.GetLastWriteTime(archivo);
+                    var minutosDiferencia = (DateTime.Now - tiempoArchivo).TotalMinutes;
+
+                    if (minutosDiferencia > settings.PrintIntervalMinutes)
+                    {
+                        log.Info($"Archivo ignorado (mayor a {settings.PrintIntervalMinutes} minutos): {archivo}");
+                        var nuevoNombre2 = Path.Combine(settings.FolderPath, "impreso_" + Path.GetFileName(archivo));
+                        File.Move(archivo, nuevoNombre2);
+                        continue; // pasa al siguiente archivo
+                    }
                     log.Info($"Procesando archivo: {archivo}");
 
                     var printer     = new PdfPrinter(archivo);

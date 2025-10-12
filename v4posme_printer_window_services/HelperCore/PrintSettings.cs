@@ -10,4 +10,5 @@ public class PrintSettings
     public int Scale { get; set; } = 85;
     public int Copies { get; set; } = 1;
     public string TipoPrinter { get; set; } = string.Empty;
+    public int PrintIntervalMinutes { get; set; } = 0;
 }
