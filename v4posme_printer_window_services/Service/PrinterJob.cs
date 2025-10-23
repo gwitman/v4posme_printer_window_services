@@ -4,7 +4,7 @@ using v4posme_printer_window_services.HelperCore;
 
 namespace v4posme_printer_window_services.Service;
 
-public class MainJob(GlobalSettings settings, ILog log) : IJob
+public class PrinterJob(GlobalSettings settings, ILog log) : IJob
 {
     public Task Execute(IJobExecutionContext context)
     {
@@ -16,22 +16,22 @@ public class MainJob(GlobalSettings settings, ILog log) : IJob
                 return Task.CompletedTask;
             }
 
-            var archivos = Directory.GetFiles(settings.FolderPath, $"{settings.PrefijoName}*.pdf");
+            var archivos        = Directory.GetFiles(settings.FolderPath, $"{settings.PrefijoName}*.pdf");
+            var minutosMaximos  = settings.PrintIntervalMinutes > 0 ? settings.PrintIntervalMinutes : 1;
+            var tiempoLimite    = DateTime.Now.AddMinutes(-minutosMaximos);
 
             foreach (var archivo in archivos)
             {
                 try
                 {
-                    var tiempoArchivo = File.GetLastWriteTime(archivo);
-                    var minutosDiferencia = (DateTime.Now - tiempoArchivo).TotalMinutes;
-
-                    if (minutosDiferencia > settings.PrintIntervalMinutes)
+                    var fechaCreacion = File.GetCreationTime(archivo);
+                    
+                    if (fechaCreacion < tiempoLimite)
                     {
-                        log.Info($"Archivo ignorado (mayor a {settings.PrintIntervalMinutes} minutos): {archivo}");
-                        var nuevoNombre2 = Path.Combine(settings.FolderPath, "impreso_" + Path.GetFileName(archivo));
-                        File.Move(archivo, nuevoNombre2);
-                        continue; // pasa al siguiente archivo
+                        log.Info($"Archivo {archivo} ignorado porque fue creado hace más de {minutosMaximos} minuto(s)");
+                        continue;
                     }
+
                     log.Info($"Procesando archivo: {archivo}");
 
                     var printer     = new PdfPrinter(archivo);

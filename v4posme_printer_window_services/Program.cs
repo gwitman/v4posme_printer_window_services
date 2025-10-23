@@ -32,14 +32,14 @@ var configuration = new ConfigurationBuilder()
 
 containerBuilder.RegisterInstance(configuration).As<IConfiguration>().SingleInstance();
 
-// Registra PrintSettings como singleton
+// Registra GlobalSettings como singleton
 containerBuilder.Register(c =>
 {
     var config      = c.Resolve<IConfiguration>();
-    var settings    = new PrintSettings();
-    config.GetSection("PrintSettings").Bind(settings);
+    var settings    = new GlobalSettings();
+    config.GetSection("GlobalSettings").Bind(settings);
     return settings;
-}).As<PrintSettings>().SingleInstance();
+}).As<GlobalSettings>().SingleInstance();
 
 var container = containerBuilder.Build();
 

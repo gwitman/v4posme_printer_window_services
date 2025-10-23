@@ -7,7 +7,7 @@ namespace v4posme_printer_window_services.HelperCore;
 
 public class PdfPrinter(string pdfPath)
 {
-    public string Print(PrintSettings settings, ILog log)
+    public string Print(GlobalSettings settings, ILog log)
     {
         try
         {
