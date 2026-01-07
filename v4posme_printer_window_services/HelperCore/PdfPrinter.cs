@@ -1,7 +1,8 @@
-﻿using System.Drawing.Printing;
-using log4net;
-using Patagames.Pdf.Net;
-using Patagames.Pdf.Net.Controls.WinForms;
+﻿using log4net;
+using Syncfusion.Pdf.Parsing;
+using Syncfusion.Windows.Forms.PdfViewer;
+using Syncfusion.Windows.PdfViewer;
+using System.Drawing.Printing;
 
 namespace v4posme_printer_window_services.HelperCore;
 
@@ -11,48 +12,39 @@ public class PdfPrinter(string pdfPath)
     {
         try
         {
-            PdfCommon.Initialize();
-            using var document = PdfDocument.Load(pdfPath);
-            using var printDoc = new PdfPrintDocument(document);
-            printDoc.PrintController                = new StandardPrintController();
+            //inicializamos el documento
+            using var pdfViewer = new PdfViewerControl();
+            pdfViewer.Load(pdfPath);
+
+            var printDoc                                    = pdfViewer.PrintDocument;
+            pdfViewer.PrinterSettings.ShowPrintStatusDialog = false;
+            pdfViewer.PrinterSettings.PageSize              = PdfViewerPrintSize.ActualSize;
+            printDoc.DefaultPageSettings.Margins            = new Margins(0, 0, 0, 0);
+            printDoc.OriginAtMargins                        = false;
+
+            //tomamos la primera pagina para buscar alto y ancho
+            var doc               = pdfViewer.LoadedDocument;
+            var page              = doc.Pages[0];
+            var pdfWidthPts       = page.Size.Width;
+            var pdfHeightPts      = page.Size.Height;
+            var pdfWidth          = (int)Math.Round(pdfWidthPts * 100 / 72);
+            var pdfHeight         = (int)Math.Round(pdfHeightPts * 100 / 72);
+
+            //ajustamos el ancho al configurado
+            printDoc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", settings.WidthPage, pdfHeight);
+
+            //configuramos la impresora
+            printDoc.PrinterSettings.Copies         = (short)settings.Copies;
             printDoc.PrinterSettings.PrinterName    = settings.PrinterName;
-            log.Info($"Document Paper Size: {printDoc.DefaultPageSettings.PaperSize}");
-            foreach (PaperSize paperSize in printDoc.PrinterSettings.PaperSizes)
-            {
-                log.Info($"Printer Paper size: {paperSize}");
-            }
 
-            printDoc.PrinterSettings.Copies     = (short)settings.Copies;
-            printDoc.PrinterSettings.FromPage   = 1;
-            printDoc.PrinterSettings.ToPage     = document.Pages.Count;
-            printDoc.DefaultPageSettings.Color  = true;
-
-            if (settings.TipoPrinter.Contains("pos", StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (settings.Scale > 0)
-                {
-                    printDoc.PrintSizeMode  = PrintSizeMode.CustomScale;
-                    printDoc.Scale          = settings.Scale;
-                }
-                else
-                {
-                    printDoc.PrintSizeMode = PrintSizeMode.ActualSize;
-                }
-
-                printDoc.AutoCenter         = false;
-                printDoc.OriginAtMargins    = true;
-                printDoc.DefaultPageSettings.Margins                = new Margins(0, 0, 0, 0);
-                printDoc.DefaultPageSettings.PrinterResolution.Kind = PrinterResolutionKind.High;
-                printDoc.DefaultPageSettings.PaperSize              = new PaperSize("Custom", settings.WidthPage, printDoc.DefaultPageSettings.PaperSize.Height);
-                printDoc.DefaultPageSettings.Landscape              = false;
-            }
-
+            //realizamos la impresion
             printDoc.Print();
-            return $"Documento se ha impreso correctamente {pdfPath}";
+
+            return $"Documento impreso correctamente: {pdfPath}";
         }
         catch (Exception ex)
         {
-            return ($"Error al imprimir: {ex.Source} {ex.Message}");
+            return $"Error al imprimir: {ex.Message}";
         }
     }
 }

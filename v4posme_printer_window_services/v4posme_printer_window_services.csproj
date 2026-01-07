@@ -10,7 +10,6 @@
   <ItemGroup>
     <PackageReference Include="Autofac.Extras.Quartz" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Pdfium.Net.SDK" Version="4.99.2704" />
     <PackageReference Include="Quartz" Version="3.14.0" />
     <PackageReference Include="System.Drawing.Common" Version="10.0.0-preview.4.25258.110" />
     <PackageReference Include="Topshelf" Version="4.3.0" />
@@ -23,5 +22,24 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Syncfusion.Pdf.Base">
+      <HintPath>C:\Program Files (x86)\Syncfusion\Essential Studio\Windows\29.1.33\precompiledassemblies\net8.0\Syncfusion.Pdf.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Syncfusion.PdfToImageConverter.Base">
+      <HintPath>C:\Program Files (x86)\Syncfusion\Essential Studio\Windows\29.1.33\precompiledassemblies\net8.0\Syncfusion.PdfToImageConverter.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Syncfusion.PdfViewer.Windows">
+      <HintPath>C:\Program Files (x86)\Syncfusion\Essential Studio\Windows\29.1.33\precompiledassemblies\net8.0\Syncfusion.PdfViewer.Windows.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Syncfusion.Shared.Base">
+      <HintPath>C:\Program Files (x86)\Syncfusion\Essential Studio\Windows\29.1.33\precompiledassemblies\net8.0\Syncfusion.Shared.Base.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
 </Project>

@@ -25,7 +25,7 @@ public class PrinterJob(GlobalSettings settings, ILog log) : IJob
                 try
                 {
                     var fechaCreacion = File.GetCreationTime(archivo);
-                    
+
                     if (fechaCreacion < tiempoLimite)
                     {
                         log.Info($"Archivo {archivo} ignorado porque fue creado hace más de {minutosMaximos} minuto(s)");
