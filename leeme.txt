@@ -14,3 +14,10 @@ Datos:
 01) ruta de log: c:\Log\posme-windows-service\logs\
 02) Ver el servicio
 		administrador de tareas, ... services
+		
+		
+		
+/*compilar el proyecto*/
+Crear la siguiente carpeta:			C:\Program Files (x86)\Syncfusion\Essential Studio\Windows\29.1.33\precompiledassemblies\net8.0
+Pasar los siguientes archivos:		F:\Witman_NsSystem\Software\SyncfusionDll.zip
+Pasar los siguiente archivos:		https://drive.google.com/file/d/1B_zSD6ncVZncu8qdw9Fe1UNnC23tr5E5/view?usp=drive_link
