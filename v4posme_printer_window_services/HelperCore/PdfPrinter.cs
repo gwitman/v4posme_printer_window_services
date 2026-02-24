@@ -31,7 +31,7 @@ public class PdfPrinter(string pdfPath)
             var pdfHeight         = (int)Math.Round(pdfHeightPts * 100 / 72);
 
             //ajustamos el ancho al configurado
-            printDoc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", settings.WidthPage, pdfHeight);
+            printDoc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", settings.WidthPage, settings.HeightPage);
 
             //configuramos la impresora
             printDoc.PrinterSettings.Copies         = (short)settings.Copies;
