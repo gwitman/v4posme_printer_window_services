@@ -12,9 +12,12 @@ public class PdfPrinter(string pdfPath)
     {
         try
         {
+            log.Info($"Iniciando impresión del archivo: {pdfPath}");
+
             //inicializamos el documento
             using var pdfViewer = new PdfViewerControl();
             pdfViewer.Load(pdfPath);
+            log.Info($"Archivo {pdfPath} cargado correctamente en el visor PDF");
 
             var printDoc                                    = pdfViewer.PrintDocument;
             pdfViewer.PrinterSettings.ShowPrintStatusDialog = false;
@@ -29,21 +32,27 @@ public class PdfPrinter(string pdfPath)
             var pdfHeightPts      = page.Size.Height;
             var pdfWidth          = (int)Math.Round(pdfWidthPts * 100 / 72);
             var pdfHeight         = (int)Math.Round(pdfHeightPts * 100 / 72);
+            log.Info($"Archivo {pdfPath} dimensiones PDF: {pdfWidthPts}pts x {pdfHeightPts}pts ({pdfWidth} x {pdfHeight} centésimas de pulgada)");
 
             //ajustamos el ancho al configurado
             printDoc.DefaultPageSettings.PaperSize = new PaperSize("Ticket", settings.WidthPage, settings.HeightPage);
+            log.Info($"Archivo {pdfPath} tamaño de papel configurado: {settings.WidthPage} x {settings.HeightPage}");
 
             //configuramos la impresora
             printDoc.PrinterSettings.Copies         = (short)settings.Copies;
             printDoc.PrinterSettings.PrinterName    = settings.PrinterName;
+            log.Info($"Archivo {pdfPath} impresora: {settings.PrinterName}, copias: {settings.Copies}");
 
             //realizamos la impresion
             printDoc.Print();
 
-            return $"Documento impreso correctamente: {pdfPath}";
+            var mensaje = $"Archivo {pdfPath} impreso correctamente en {settings.PrinterName}";
+            log.Info(mensaje);
+            return mensaje;
         }
         catch (Exception ex)
         {
+            log.Error($"Archivo {pdfPath} error al imprimir: {ex.Message}", ex);
             return $"Error al imprimir: {ex.Message}";
         }
     }

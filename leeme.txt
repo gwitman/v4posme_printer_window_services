@@ -2,7 +2,7 @@
 01) Compilar la solucion
 02) Pegar los archivos compilados en la siguiente direccion:  	
 	origen:	C:\xampp\teamds2\nsSystem\v4posme_printer_window_services\v4posme_printer_window_services\v4posme_printer_window_services\bin\Debug\net8.0-windows
-	destino: C:\xampp\teamds2\nsSystem\v4posme_printer_services
+	destino: mkdir C:\xampp\teamds2\nsSystem\v4posme_printer_services
 
 	
 03) acceder desde la consola en modo admin: al directorio
@@ -12,8 +12,9 @@
 
 Datos:
 01) ruta de log: c:\Log\posme-windows-service\logs\
+	mkdir C:\Log\posme-windows-service\logs
 02) Ver el servicio
-		administrador de tareas, ... services
+		administrador de tareas, ... services ... "Servicio de Impresion de posMe"
 		
 		
 		
